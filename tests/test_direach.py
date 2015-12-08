@@ -127,7 +127,7 @@ def test_message_counts():
                  "url": "https://gopivotal-com.socialcast.com/api/messages/28211388-welcome-adam"
                  },
                 {"action": "asked a question",
-                 "body": "CF",
+                 "body": "CF and Spring",
                  "category_id": None,
                  "comments": [],
                  "comments_count": 0,
@@ -143,7 +143,7 @@ def test_message_counts():
                  "url": "https://gopivotal-com.socialcast.com/api/messages/28211388-welcome-adam"
                  },
                 {"action": "asked a question",
-                 "body": " Something something Greenplum",
+                 "body": "@ChampionsGPDB data science",
                  "category_id": None,
                  "comments": [],
                  "comments_count": 0,
@@ -167,6 +167,12 @@ def test_message_counts():
     assert result.loc[1]['bds_related'] == False
     assert result.loc[2]['bds_related'] == False
     assert result.loc[3]['bds_related'] == True
+    assert result.loc[1]['spring_related'] == False
+    assert result.loc[2]['spring_related'] == True
+    assert result.loc[3]['spring_related'] == False
+    assert result.loc[1]['ds_related'] == False
+    assert result.loc[2]['ds_related'] == False
+    assert result.loc[3]['ds_related'] == True
 
 
 def test_daily_counts():
@@ -180,6 +186,16 @@ def test_daily_counts():
                                       28182889: True,
                                       28183158: False,
                                       28188416: False},
+                       'spring_related': {28115834: False,
+                                      28182055: False,
+                                      28182889: True,
+                                      28183158: False,
+                                      28188416: True},
+                       'ds_related': {28115834: False,
+                                      28182055: False,
+                                      28182889: False,
+                                      28183158: False,
+                                      28188416: True},
                        'created_at': {28115834: pd.Timestamp('2015-12-02 21:03:50'),
                                       28182055: pd.Timestamp('2015-12-05 19:38:33'),
                                       28182889: pd.Timestamp('2015-12-05 20:45:24'),
@@ -205,6 +221,18 @@ def test_daily_counts():
     assert result.iloc[2]['cf_related'] == 0
     assert result.iloc[3]['cf_related'] == 2
     assert result.iloc[4]['cf_related'] == 0
+
+    assert result.iloc[0]['spring_related'] == 0
+    assert result.iloc[1]['spring_related'] == 0
+    assert result.iloc[2]['spring_related'] == 0
+    assert result.iloc[3]['spring_related'] == 1
+    assert result.iloc[4]['spring_related'] == 1
+
+    assert result.iloc[0]['ds_related'] == 0
+    assert result.iloc[1]['ds_related'] == 0
+    assert result.iloc[2]['ds_related'] == 0
+    assert result.iloc[3]['ds_related'] == 0
+    assert result.iloc[4]['ds_related'] == 1
 
     assert result.iloc[0]['total_messages'] == 1
     assert result.iloc[1]['total_messages'] == 0

@@ -33,7 +33,7 @@ def get_messages(page=1, per_page=500):
 
 def make_dataframe(msg_list):
     base_df = pd.DataFrame(msg_list)
-    new_df = base_df.loc[:,['title', 'action', 'body', 'comments', 'comments_count', 'id']]
+    new_df = base_df.loc[:, ['title', 'action', 'body', 'comments', 'comments_count', 'id']]
     new_df['created_at'] = pd.to_datetime(base_df['created_at'])
     new_df['updated_at'] = pd.to_datetime(base_df['updated_at'])
     new_df.set_index('id', inplace=True)
@@ -42,13 +42,19 @@ def make_dataframe(msg_list):
 
 def add_phrase_counts(df):
     df['cf_related'] = df.body.str.contains('cf|cloud foundry|pcf|bosh|diego', case=False)
-    df['bds_related'] = df.body.str.contains('bds|big data suite|greenplum|hawq|phd|hdb|hadoop', case=False)
+    df['bds_related'] = df.body.str.contains('gpdb|bds|big data suite|greenplum|hawq|phd|hdb|hadoop|gemfire', case=False)
+    df['spring_related'] = df.body.str.contains('spring|xd|spring boot', case=False)
+    df['ds_related'] = df.body.str.contains('data science|machine learning', case=False)
     return df
 
 
 def daily_counts(df):
     df['total_messages'] = 1
-    grp = df.groupby(df.created_at.dt.date)[['cf_related', 'bds_related', 'total_messages']].sum()
+    grp = df.groupby(df.created_at.dt.date)[['cf_related',
+                                             'bds_related',
+                                             'spring_related',
+                                             'ds_related',
+                                             'total_messages']].sum()
     with_date_index = grp.set_index(pd.DatetimeIndex(grp.index))
     with_date_index = with_date_index.resample('1D', how='sum')
     with_date_index.fillna(0, inplace=True)
