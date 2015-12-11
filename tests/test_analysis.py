@@ -1,13 +1,21 @@
 import pandas as pd
+import json
 from pandas.util import testing as pdt
 
 import socialcasting.analysis
 from fixtures import python_msg
 
 
+def test_load_all_messages(tmpdir):
+    f = tmpdir.join("messages-0001.json")
+    f.write(json.dumps(python_msg))
+    result = socialcasting.analysis.load_all_messages(str(tmpdir))
+    assert len(result) == 1
+
+
 def test_base_df():
     msg_list = [python_msg]
-    result = socialcasting.analysis.make_dataframe(msg_list)
+    result = socialcasting.analysis.transform_dataframe(msg_list)
     assert isinstance(result, pd.DataFrame)
     pdt.assert_index_equal(result.columns, pd.Index(['title', 'action', 'body', 'comments', 'comments_count',
                                                      'created_at', 'updated_at'], dtype='object'))
@@ -27,7 +35,7 @@ def test_message_counts():
 
     msg_list = [m1, m2, m3]
     print(msg_list)
-    df = socialcasting.analysis.make_dataframe(msg_list)
+    df = socialcasting.analysis.transform_dataframe(msg_list)
     phrases_by_name = {'topic_a': 'first|one|uno',
                        'topic_b': 'second|two|duo',
                        'topic_c': 'third|three|tre'}

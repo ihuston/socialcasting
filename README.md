@@ -13,7 +13,7 @@ The following high level commands are useful:
 
 * `get_all_messages(storage_dir)`
   Get all the messages from the company stream and store as JSON.
-* `make_dataframe(msg_list)`
+* `transform_dataframe(msg_list)`
   Convert a raw message list into a Pandas DataFrame.
 * `flag_topics(df, topics_by_name)`
   Given a dictionary of regex expressions, add flags identifying which contain these topics.

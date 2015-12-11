@@ -1,10 +1,22 @@
 # Socialcasting analysis
+import json
 
 import pandas as pd
+from pathlib import Path
 
 
-def make_dataframe(msg_list):
-    """Convert a message list into a Pandas DataFrame"""
+def load_all_messages(storage_dir):
+    df_list = []
+    p = Path(storage_dir)
+    for file in p.glob('messages-00*.json'):
+        with file.open() as f:
+            df_list.append(pd.DataFrame(json.loads(line) for line in f))
+    df = pd.concat(df_list, ignore_index=True)
+    return transform_dataframe(df)
+
+
+def transform_dataframe(msg_list):
+    """Transform a message list DataFrame"""
     base_df = pd.DataFrame(msg_list)
     new_df = base_df.loc[:, ['title', 'action', 'body', 'comments', 'comments_count', 'id']]
     new_df['created_at'] = pd.to_datetime(base_df['created_at'])
@@ -18,7 +30,7 @@ def flag_topics(df, phrases_by_name):
     Flag phrases in the messages as specified by a regular expression.
 
     Args:
-        df: DataFrame containing messages as created by make_dataframe().
+        df: DataFrame containing messages as created by transform_dataframe().
         phrases_by_name: dict of regex expressions used to identify topics.
 
     Returns:
