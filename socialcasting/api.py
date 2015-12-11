@@ -1,8 +1,9 @@
-# Direach - API helper for Socialcast
+# Socialcasting - API helper for Socialcast
 import json
 
 import pandas as pd
 import requests
+# noinspection PyUnresolvedReferences
 from requests.exceptions import HTTPError
 import os
 
