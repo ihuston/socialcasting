@@ -5,5 +5,5 @@ setup(
     packages=find_packages(),
     install_requires=['pandas', 'requests'],
     setup_requires=['pytest-runner'],
-    tests_requires=['pytest', 'responses']
+    tests_require=['pytest', 'responses']
 )
