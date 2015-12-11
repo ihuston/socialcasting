@@ -24,6 +24,16 @@ The following high level commands are useful:
 Main requirements: [Pandas](http://pandas.pydata.org), [Requests](http://python-requests.org)
 Test requirements: [Pytest](http://pytest.org), [Responses](https://github.com/getsentry/responses)
 
+As Pandas depends on [NumPy](http://numpy.org), the recommend way to install is using [Conda](http://conda.pydata.org).
+You can create a new conda environment and install this package with the following:
+```
+$ git clone https://github.com/ihuston/socialcasting.git
+$ cd socialcasting
+$ conda create -n socialcasting python=3 numpy pandas requests
+$ source activate socialcasting
+$ python setup.py install
+```
+
 ## Installation
 Clone this repo and run `python setup.py install`.
 
